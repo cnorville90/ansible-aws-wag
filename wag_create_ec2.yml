@@ -2,25 +2,19 @@
 - name: Playbook to spin up an EC2 instance with a known AMI
   hosts: localhost
   gather_facts: false
-  vars_files:
-    - aws_vars.yml
-  vars: 
-    aws_ami: ami-0583d8c7a9c35822c
 
   tasks:
 
     - name: Gather information about an AMI
       amazon.aws.ec2_ami_info:
         image_ids: "{{ aws_ami }}"
-        access_key: "{{ aws_access_key }}"
-        secret_key: "{{ aws_secret_key }}"
         region: us-east-1
       register: ami_return
 
     - name: Display AMI information
       ansible.builtin.debug:
         var: ami_return.images[0]['image_id']
-      when: 
+      when:
         - ami_return.images[0]['image_id'] == aws_ami
         - ami_return.images[0]['state'] == "available"
 
@@ -35,11 +29,9 @@
           assign_public_ip: true
         security_group: aap-sg
         vpc_subnet_id: subnet-0dcdc6b7937803ee1
-        access_key: "{{ aws_access_key }}"
-        secret_key: "{{ aws_secret_key }}"
         wait: true
       register: ec2_spinup_return
 
     - name: Dump out the new ec2 information
       ansible.builtin.debug:
-        var: ec2_spinup_return       
+        var: ec2_spinup_return
