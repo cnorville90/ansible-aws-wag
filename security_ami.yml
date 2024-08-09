@@ -1,0 +1,15 @@
+---
+- name: Find an AMI
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+
+    - name: find ami for check point management server (SECURITY MODE)
+      amazon.aws.ec2_ami_info:
+        region: "{{ ec2_region }}"
+        owners: "{{ ec2_info['checkpoint_mgmt']['owners'] }}"
+        filters:
+          name: "{{ ec2_info['checkpoint_mgmt']['filter'] }}"
+          architecture: "{{ ec2_info['checkpoint_mgmt']['architecture'] }}"
+      register: checkpoint_mgmt_ami_list

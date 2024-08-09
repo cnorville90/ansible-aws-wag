@@ -1,0 +1,21 @@
+---
+- name: AAP Controller Routines
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - aws_vars.yml
+
+  tasks:
+
+    - name: AAP Provisioning callback
+      amazon.aws.ec2_instance:
+        access_key: "{{ aws_access_key }}"
+        secret_key: "{{ aws_secret_key }}"
+        region: us-east-1
+        vpc_subnet_id: subnet-0a3e35624be98d0d0
+        name: gold-image-test
+        key_name: aap_aws
+        aap_callback:
+          tower_address: https://controller.thenorvilles.com
+          host_config_key: 'abcdefghij'
+          job_template_id: 9

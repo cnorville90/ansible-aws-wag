@@ -1,0 +1,44 @@
+---
+- name: AAP Controller Routines
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - aws_vars.yml
+
+  tasks:
+
+    - name: Update the inventory source
+      ansible.controller.inventory_source_update:
+        name: "AWS - EC2"
+        inventory: "AWS Inventory"
+        controller_host: https://controller.thenorvilles.com
+        # controller_oauthtoken: "JpU77JABAo0EAX1N2SgcHUaSVvshCf"
+        controller_username: "cnorville"
+        controller_password: "SkyWalk1!"
+        wait: true
+
+    - name: Get EC2 INstance Info
+      amazon.aws.ec2_instance_info:
+        access_key: "{{ aws_access_key }}"
+        secret_key: "{{ aws_secret_key }}"
+        region: us-east-1
+        filters:
+          "tag:Name": gold-image-test
+      register: ec2_output
+
+    - name: Debug var Dump
+      ansible.builtin.debug:
+        var: ec2_output
+
+    - name: AAP Provisioning callback 
+      amazon.aws.ec2_instance:
+        access_key: "{{ aws_access_key }}"
+        secret_key: "{{ aws_secret_key }}"
+        region: us-east-1
+        vpc_subnet_id: subnet-0a3e35624be98d0d0
+        name: gold-image-test
+        key_name: aap_aws
+        aap_callback:
+          tower_address: https://controller.thenorvilles.com
+          host_config_key: abcdefghij
+          job_template_id: 9
