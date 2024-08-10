@@ -1,0 +1,10 @@
+---
+- name: Playbook to customize a deployed EC2 instance in AWS
+  hosts: all
+  gather_facts: false
+
+  tasks:
+
+    - name: See if we picked up the new Ec2 as a variable
+      ansible.builtin.debug:
+        var: aws_ec2_inventory_name
