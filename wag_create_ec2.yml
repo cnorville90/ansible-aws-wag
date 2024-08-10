@@ -8,7 +8,7 @@
     - name: Gather information about an AMI
       amazon.aws.ec2_ami_info:
         image_ids: "{{ aws_ami }}"
-        region: us-east-1
+        region: "{{ aws_region }}"
       register: ami_return
 
     - name: Display AMI information
@@ -20,18 +20,25 @@
 
     - name: Spin up an EC2 instance with the provided AMI ID
       amazon.aws.ec2_instance:
-        name: "gold-image-test"
-        instance_type: t2.micro
+        name: "{{ gold_image_name }}"
+        instance_type: "{{ ec2_instance_type }}"
         image_id: "{{ aws_ami }}"
-        region: us-east-1
-        key_name: aap_aws
+        region: "{{ aws_region }}"
+        key_name: "{{ aws_key_name }}"
         network:
           assign_public_ip: true
-        security_group: aap-sg
-        vpc_subnet_id: subnet-0dcdc6b7937803ee1
+        security_group: "{{ aws_sec_grp }}"
+        vpc_subnet_id: "{{ aws_vpc }}"
         wait: true
       register: ec2_spinup_return
 
-    - name: Dump out the new ec2 information
+    - name: Drill down to the AWS instance name
       ansible.builtin.debug:
-        var: ec2_spinup_return
+        var: ec2_spinup_return.instances[0].public_dns_name
+
+    - name: Set stats for the AWS instance name
+      ansible.builtin.set_stats:
+        data:
+          aws_ec2_inventory_name: "{{ ec2_spinup_return.instances[0].public_dns_name }}"
+        per_host: false
+        aggregate: false

@@ -6,6 +6,7 @@
     - aws_vars.yml
   vars: 
     aws_ami: ami-0583d8c7a9c35822c
+    gold_image_name: gold-image-test
 
   tasks:
 
@@ -26,7 +27,7 @@
 
     - name: Spin up an EC2 instance with the provided AMI ID
       amazon.aws.ec2_instance:
-        name: "gold-image-test"
+        name: "{{ gold_image_name }}"
         instance_type: t2.micro
         image_id: "{{ aws_ami }}"
         region: us-east-1
@@ -40,6 +41,6 @@
         wait: true
       register: ec2_spinup_return
 
-    - name: Dump out the new ec2 information
+    - name: Drill down to the AWS instance name
       ansible.builtin.debug:
-        var: ec2_spinup_return       
+        var: ec2_spinup_return.instances[0].public_dns_name
