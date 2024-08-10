@@ -8,3 +8,25 @@
     - name: See if we picked up the new Ec2 as a variable
       ansible.builtin.debug:
         var: aws_ec2_inventory_name
+
+    - name: We passed the variable but it is the inventory_hostname right?
+      ansible.builtin.debug:
+        var: inventory_hostname
+
+    - name: Lets make sure the instance is ready to go
+      ansible.builtin.wait_for:
+        port: 22
+        host: "{{ inventory_hostname }}"
+        search_regex: OpenSSH
+        delay: 10
+      vars:
+        ansible_connection: local
+      register: ec2_ready
+
+    - name: Dump out return
+      ansible.builtin.debug:
+        var: ec2_ready
+
+    - name: Ec2 is ready for customization
+      ansible.builtin.debug:
+        msg: "EC2 Instance: {{ inventory_hostname }} is ready for customization"
