@@ -32,3 +32,7 @@
         msg: "EC2 Instance: {{ inventory_hostname }} is ready for customization"
       when:
         - ec2_ready.state == 'started'
+
+    - name: Dump facts
+      ansible.builtin.debug:
+        var: ansible_facts
