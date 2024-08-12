@@ -3,9 +3,7 @@
   hosts: all
   gather_facts: false
   become: true
-  vars:
-    aws_ec2_inventory_name: attila.thenorvilles.com
-
+ 
   tasks:
 
     - name: Set the MOTD
@@ -27,8 +25,12 @@
         owner: root
         group: root
         mode: '644'
+      when:
+        - inventory_hostname == aws_ec2_inventory_name
 
     - name: Install the Tree package
       ansible.builtin.dnf:
         name: tree
         state: present
+      when:
+        - inventory_hostname == aws_ec2_inventory_name
