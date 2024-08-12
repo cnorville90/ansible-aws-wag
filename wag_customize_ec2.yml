@@ -23,17 +23,10 @@
         ansible_connection: local
       register: ec2_ready
 
-    - name: Dump out return
-      ansible.builtin.debug:
-        var: ec2_ready
-
     - name: Ec2 is ready for customization
       ansible.builtin.debug:
         msg: "EC2 Instance: {{ inventory_hostname }} is ready for customization"
       when:
         - ec2_ready.state == 'started'
         - inventory_hostname == aws_ec2_inventory_name
-
-    - name: Dump facts 
-      ansible.builtin.debug:
-        var: ansible_facts
+        - ansible_facts.distribution == 'RedHat'
