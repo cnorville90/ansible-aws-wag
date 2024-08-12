@@ -1,7 +1,7 @@
 ---
 - name: Playbook to customize a deployed EC2 instance in AWS
   hosts: all
-  gather_facts: false
+  gather_facts: true
 
   tasks:
 
@@ -32,7 +32,8 @@
         msg: "EC2 Instance: {{ inventory_hostname }} is ready for customization"
       when:
         - ec2_ready.state == 'started'
+        - inventory_hostname == aws_ec2_inventory_name
 
-    - name: Dump facts
+    - name: Dump facts 
       ansible.builtin.debug:
         var: ansible_facts
