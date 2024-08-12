@@ -30,3 +30,5 @@
     - name: Ec2 is ready for customization
       ansible.builtin.debug:
         msg: "EC2 Instance: {{ inventory_hostname }} is ready for customization"
+      when:
+        - ec2_ready.state == 'started'
