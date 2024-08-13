@@ -36,9 +36,10 @@
       ansible.builtin.debug:
         var: ec2_spinup_return.instances[0].public_dns_name
 
-    - name: Set stats for the AWS instance name
+    - name: Set stats for the AWS instance we just spun up
       ansible.builtin.set_stats:
         data:
           aws_ec2_inventory_name: "{{ ec2_spinup_return.instances[0].public_dns_name }}"
+          aws_ec2_instance_id: "{{ ec2_spinup_return.instances[0].instance_id }}"
         per_host: false
         aggregate: false
