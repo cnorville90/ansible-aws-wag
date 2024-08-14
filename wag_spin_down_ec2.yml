@@ -16,8 +16,8 @@
         name: "{{ aws_ec2_name_tag }}"
         vpc_subnet_id: "{{ aws_ec2_subnet }}"
         wait: true
-      register: ec2_instance_return
+      register: ec2_stop_instance_return
 
     - name: Dump out return facts
       ansible.builtin.debug:
-        var: ec2_instance_return
+        var: ec2_stop_instance_return
