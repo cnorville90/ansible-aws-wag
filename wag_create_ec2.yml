@@ -43,19 +43,3 @@
           aws_ec2_instance_id: "{{ ec2_spinup_return.instances[0].instance_id }}"
         per_host: false
         aggregate: false
-
-    - name: Lets make sure the instance is ready to go
-      ansible.builtin.wait_for:
-        port: 22
-        host: "{{ inventory_hostname }}"
-        search_regex: OpenSSH
-        delay: 10
-      vars:
-        ansible_connection: local
-      register: ec2_ready
-
-    - name: Ec2 is ready for customization
-      ansible.builtin.debug:
-        msg: "EC2 Instance: {{ inventory_hostname }} is ready for customization"
-      when:
-        - ec2_ready.state == 'started'
