@@ -14,6 +14,7 @@
         region: "{{ aws_ec2_instance_region }}"
         state: stopped
         name: "{{ aws_ec2_name_tag }}"
+        vpc_subnet_id: "{{ aws_ec2_subnet }}"
         wait: true
       register: ec2_instance_return
 

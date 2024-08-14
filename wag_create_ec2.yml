@@ -43,5 +43,6 @@
           aws_ec2_instance_id: "{{ ec2_spinup_return.instances[0].instance_id }}"
           aws_ec2_instance_region: "{{ aws_region }}"
           aws_ec2_name_tag: "{{ gold_image_name }}"
+          aws_ec2_subnet: "{{ aws_vpc }}"
         per_host: false
         aggregate: false
