@@ -1,7 +1,7 @@
 ---
 - name: Playbook to customize a deployed EC2 instance in AWS
   hosts: all
-  gather_facts: true
+  gather_facts: false
 
   tasks:
 
