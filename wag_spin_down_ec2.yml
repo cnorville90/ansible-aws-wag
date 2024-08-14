@@ -11,8 +11,9 @@
 
     - name: Spin down EC2 instance
       amazon.aws.ec2_instance:
+        region: "{{ aws_ec2_instance_region }}"
         state: stopped
-        name: "{{ aws_ec2_inventory_name }}"
+        name: "{{ aws_ec2_name_tag }}"
         wait: true
       register: ec2_instance_return
 
