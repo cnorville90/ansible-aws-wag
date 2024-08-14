@@ -1,0 +1,21 @@
+---
+- name: PLaybook to turn off an EC2 instance
+  hosts: all
+  gather_facts: false
+
+  tasks:
+
+    - name: About to Spin down the EC2
+      ansible.builtin.debug:
+        msg: "About to spin down {{ aws_ec2_inventory_name }}"
+
+    - name: Spin down EC2 instance
+      amazon.aws.ec2_instance:
+        state: stopped
+        name: "{{ aws_ec2_inventory_name }}"
+        wait: true
+      register: ec2_instance_return
+
+    - name: Dump out return facts
+      ansible.builtin.debug:
+        var: ec2_instance_return
