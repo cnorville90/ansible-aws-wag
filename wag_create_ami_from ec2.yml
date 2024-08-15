@@ -5,11 +5,11 @@
 
   tasks:
 
-    - name: Create a new AMI from a stopped EC2 Instance
+    - name: Create a new AMI from an EC2 Instance
       amazon.aws.ec2_ami:
-        instance_id: i-0c209611c28aa1992
-        region: us-east-1
-        name: ANEWAMI
+        instance_id: "{{ aws_ec2_instance_id }}"
+        region: '{{ aws_ec2_instance_region }}'
+        name: WAG-New-Gold-Image
         tags:
           Name: New-Gold-Image
       register: ami_creation_output
