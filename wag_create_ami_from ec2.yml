@@ -1,0 +1,19 @@
+---
+- name: Playbook to create an AMI from an existing EC2 instance
+  hosts: all
+  gather_facts: false
+
+  tasks:
+
+    - name: Create a new AMI from a stopped EC2 Instance
+      amazon.aws.ec2_ami:
+        instance_id: i-0c209611c28aa1992
+        region: us-east-1
+        name: ANEWAMI
+        tags:
+          Name: New-Gold-Image
+      register: ami_creation_output
+
+    - name: Dump
+      ansible.builtin.debug:
+        var: ami_creation_output
